@@ -25,6 +25,7 @@ class YoutubeApp extends PolymerElement {
           text-align: center;
           background-image: url(images/giphy3.gif);
           width: 100%;
+          --paper-card-header-color: #fff !important;
         }
 
         .radio-content {
@@ -97,8 +98,9 @@ class YoutubeApp extends PolymerElement {
       logins: arr,
       radio: this.selected,
     };
-    console.log(data);
-    const url = 'http://localhost:9000/';
+    const url = 'http://localhost:9000/api/v1/example/example';
+    this.link = '';
+    this.accinfo = '';
     fetch(url, {
      method: 'POST',
      body: JSON.stringify(data),
