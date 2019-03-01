@@ -15,41 +15,62 @@ class YoutubeApp extends PolymerElement {
     return html`
       <style>
         :host {
-          width: 100%;
+          width: 80%;
           display: flex;
           flex-direction: column;
           flex: 1 1 auto;
+          margin: 0 auto;
         }
         paper-card {
           text-align: center;
+          background-image: url(images/giphy3.gif);
+          width: 100%;
         }
+
         .radio-content {
           text-align: right;
           padding-right: 20px;
           padding-bottom: 15px;
+          background: white;
+        }
+        .card-actions {
+          background: white;
         }
         .card-content {
           text-align: left;
+          background: white;
         }
         .button {
           width: 100%;
         }
+        .radio-icon {
+          max-height: 45px;
+          background: white;
+        }
+        .invert {
+          filter: invert(100);
+        }
+
       </style>
-        <paper-card heading="youTube">
+      <audio autoplay loop>
+        <source src="/images/noise.mp3" type="audio/mpeg">
+      </audio>
+        <paper-card heading="youTubeZcliKZ0R">
+        <img src="/images/giphy2.gif" />
         <div class="card-content">
-          <paper-input label="youTube Link"></paper-input>
+          <paper-input label="youTubeZ Linkz0r" value="{{link}}"></paper-input>
         </div>
         <div class="card-content">
-          <paper-textarea label="account:password"></paper-textarea>
+          <paper-textarea label="account:password" value="{{accinfo}}"></paper-textarea>
         </div>
         <div class="radio-content">
-          <paper-radio-group selected="Like">
-            <paper-radio-button name="Like">Like</paper-radio-button>
-            <paper-radio-button name="Dislike">Dislike</paper-radio-button>
+          <paper-radio-group selected="{{selected}}">
+            <paper-radio-button name="Like"><img class="radio-icon" src="images/triforce.png" /></paper-radio-button>
+            <paper-radio-button name="Dislike"><img class="radio-icon" src="images/radioactive.png" /></paper-radio-button>
           </paper-radio-group>
         </div>
         <div class="card-actions">
-          <paper-button class="button">Activate</paper-button>
+          <paper-button class="button" on-click="_fire"><img class="radio-icon invert" src="images/giphy.gif"></paper-button>
         </div>
         </paper-card>
     `;
@@ -61,6 +82,35 @@ class YoutubeApp extends PolymerElement {
         value: 'youtube-app'
       }
     };
+  }
+  _fire(){
+    console.log(this.link, this.accinfo.split('\n'), this.selected);
+    var arr = [];
+    var accs = this.accinfo.split('\n');
+    for (var i = 0; i < accs.length; i++) {
+      var details = accs[i].split(':');
+      arr.push({email: details[0], password: details[1]});
+    }
+    console.log(arr);
+    const data = {
+      link: this.link,
+      logins: arr,
+      radio: this.selected,
+    };
+    console.log(data);
+    const url = 'http://localhost:9000/';
+    fetch(url, {
+     method: 'POST',
+     body: JSON.stringify(data),
+     headers: {'Content-Type': 'application/json'},
+   })
+       .then((response) => {
+         console.log(response);
+         return response.json();
+       })
+        .catch((err) => {
+          console.log(err)
+        })
   }
 }
 
