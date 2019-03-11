@@ -64,12 +64,24 @@ class YoutubeApp extends PolymerElement {
         <div class="card-content">
           <paper-textarea label="account:password" value="{{accinfo}}"></paper-textarea>
         </div>
+        <div class="card-content">
+          <paper-input label="delay" value="{{time}}"></paper-input>
+        </div>
         <div class="radio-content">
           <paper-radio-group selected="{{selected}}">
-            <paper-radio-button name="Like"><img class="radio-icon" src="images/triforce.png" /></paper-radio-button>
-            <paper-radio-button name="Dislike"><img class="radio-icon" src="images/radioactive.png" /></paper-radio-button>
+          Options:
+            <paper-radio-button name="Like" value="{{option}}">Like</paper-radio-button>
+            <paper-radio-button name="Dislike" value="{{option}}">Dislike</paper-radio-button>
           </paper-radio-group>
         </div>
+        <div class="radio-content">
+          <paper-radio-group selected="{{headless}}">
+          Headless:
+            <paper-radio-button name="true" value="{{headless}}">True</paper-radio-button>
+            <paper-radio-button name="false" value="{{headless}}">False</paper-radio-button>
+          </paper-radio-group>
+        </div>
+
         <div class="card-actions">
           <paper-button class="button" on-click="_fire"><img class="radio-icon invert" src="images/giphy.gif"></paper-button>
         </div>
@@ -85,7 +97,7 @@ class YoutubeApp extends PolymerElement {
     };
   }
   _fire(){
-    console.log(this.link, this.accinfo.split('\n'), this.selected);
+    console.log(this.link, this.accinfo.split('\n'), this.selected, this.headless, this.time);
     var arr = [];
     var accs = this.accinfo.split('\n');
     for (var i = 0; i < accs.length; i++) {
@@ -96,11 +108,16 @@ class YoutubeApp extends PolymerElement {
     const data = {
       link: this.link,
       logins: arr,
+      time: parseInt(this.time, 10),
       radio: this.selected,
+      headless: this.headless,
     };
     const url = 'http://localhost:9000/api/v1/example/example';
     this.link = '';
     this.accinfo = '';
+    this.time = '';
+    this.selected = '';
+    this.headless = '';
     fetch(url, {
      method: 'POST',
      body: JSON.stringify(data),
